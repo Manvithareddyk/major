@@ -1,4 +1,5 @@
-# SafeSpace - Social Media Platform with Cyberbullying Detection
+# Create README.md with installation and usage instructions
+readme_content = '''# SafeSpace - Social Media Platform with Cyberbullying Detection
 
 A modern social media platform that uses AI to detect and prevent cyberbullying, ensuring only positive and neutral content is shared.
 
@@ -202,3 +203,9 @@ For issues, questions, or contributions, please create an issue in the project r
 ---
 
 **SafeSpace** - Building a positive online community, one post at a time! 🛡️✨
+'''
+
+with open(f'{project_name}/README.md', 'w') as f:
+    f.write(readme_content)
+
+print("Created README.md")

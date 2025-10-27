@@ -1,0 +1,69 @@
+# Create profile template
+profile_template = '''{% extends "base.html" %}
+
+{% block title %}{{ user.username }} - SafeSpace{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-user-circle fa-5x text-primary mb-3"></i>
+                <h4>{{ user.username }}</h4>
+                <p class="text-muted">{{ user.email }}</p>
+                <p><small>Member since: {{ user.created_at.strftime('%B %Y') }}</small></p>
+                
+                <div class="row text-center mt-3">
+                    <div class="col-6">
+                        <h5 class="text-primary">{{ posts|length }}</h5>
+                        <small>Posts</small>
+                    </div>
+                    <div class="col-6">
+                        <h5 class="text-{{ 'danger' if user.warning_count > 0 else 'success' }}">{{ user.warning_count }}</h5>
+                        <small>Warnings</small>
+                    </div>
+                </div>
+                
+                {% if user.is_banned %}
+                    <span class="badge bg-danger mt-2">Banned</span>
+                {% else %}
+                    <span class="badge bg-success mt-2">Active</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <h3>{{ user.username }}'s Posts</h3>
+        
+        {% if posts %}
+            {% for post in posts %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <small class="text-muted">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                            {% if post.sentiment_label %}
+                                <span class="badge bg-{{ 'success' if post.sentiment_label == 'positive' else 'secondary' }}">
+                                    {{ post.sentiment_label.title() }}
+                                </span>
+                            {% endif %}
+                        </div>
+                        <p class="card-text">{{ post.content }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-comments fa-3x text-muted mb-3"></i>
+                <h4>No posts yet</h4>
+                <p class="text-muted">{{ user.username }} hasn't shared anything yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}'''
+
+with open(f'{project_name}/templates/profile.html', 'w') as f:
+    f.write(profile_template)
+
+print("Created templates/profile.html")

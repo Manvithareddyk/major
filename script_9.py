@@ -1,0 +1,152 @@
+# Create CSS file
+css_content = '''/* Custom styles for SafeSpace */
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.15s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.btn {
+    border-radius: 20px;
+    padding: 0.375rem 1rem;
+}
+
+.alert {
+    border-radius: 10px;
+    border: none;
+}
+
+.badge {
+    font-size: 0.7em;
+    padding: 0.25em 0.5em;
+}
+
+.post-content {
+    line-height: 1.6;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.admin-panel .card-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+    border-radius: 10px 10px 0 0;
+}
+
+.flagged-item {
+    border-left: 4px solid #dc3545;
+    background-color: #fff5f5;
+}
+
+.approved-item {
+    border-left: 4px solid #28a745;
+    background-color: #f5fff5;
+}
+
+.sentiment-positive {
+    color: #28a745;
+}
+
+.sentiment-negative {
+    color: #dc3545;
+}
+
+.sentiment-neutral {
+    color: #6c757d;
+}
+
+.footer {
+    margin-top: auto;
+}
+
+/* Animation for alerts */
+.alert {
+    animation: slideInDown 0.5s ease-out;
+}
+
+@keyframes slideInDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .btn-group-sm {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .btn-group-sm .btn {
+        flex: 1;
+        min-width: 80px;
+    }
+}
+
+/* Loading spinner */
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #007bff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}'''
+
+with open(f'{project_name}/static/css/style.css', 'w') as f:
+    f.write(css_content)
+
+print("Created static/css/style.css")
