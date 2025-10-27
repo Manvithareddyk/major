@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - SafeSpace{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2><i class="fas fa-cog"></i> Admin Panel</h2>
+        <p class="text-muted">Review flagged content and manage user accounts</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-flag"></i> Flagged Accounts ({{ flagged_accounts|length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if flagged_accounts %}
+                    {% for flag in flagged_accounts %}
+                        <div class="border p-3 mb-3 rounded">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6>
+                                    <i class="fas fa-user"></i> {{ flag.user.username }}
+                                    <span class="badge bg-warning">{{ flag.user.warning_count }} warnings</span>
+                                </h6>
+                                <small class="text-muted">{{ flag.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                            </div>
+                            <p><strong>Reason:</strong> {{ flag.reason }}</p>
+                            {% if flag.post %}
+                                <p><strong>Content:</strong> "{{ flag.post.content[:100] }}..."</p>
+                                <p><strong>Sentiment:</strong> 
+                                    <span class="badge bg-{{ 'danger' if flag.post.sentiment_label == 'negative' else 'secondary' }}">
+                                        {{ flag.post.sentiment_label }}
+                                    </span>
+                                </p>
+                            {% endif %}
+                            <div class="btn-group btn-group-sm" role="group">
+                                <a href="{{ url_for('admin_review', flag_id=flag.id, action='warn') }}" 
+                                   class="btn btn-warning" onclick="return confirm('Issue warning to this user?')">
+                                    <i class="fas fa-exclamation-triangle"></i> Warn
+                                </a>
+                                <a href="{{ url_for('admin_review', flag_id=flag.id, action='ban') }}" 
+                                   class="btn btn-danger" onclick="return confirm('Ban this user?')">
+                                    <i class="fas fa-ban"></i> Ban
+                                </a>
+                                <a href="{{ url_for('admin_review', flag_id=flag.id, action='approve') }}" 
+                                   class="btn btn-success" onclick="return confirm('Approve this content?')">
+                                    <i class="fas fa-check"></i> Approve
+                                </a>
+                                <a href="{{ url_for('admin_review', flag_id=flag.id, action='reject') }}" 
+                                   class="btn btn-secondary" onclick="return confirm('Reject this content?')">
+                                    <i class="fas fa-times"></i> Reject
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                        <h5>No Flagged Accounts</h5>
+                        <p class="text-muted">All users are following community guidelines!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5><i class="fas fa-exclamation-triangle"></i> Flagged Posts ({{ flagged_posts|length }})</h5>
+            </div>
+            <div class="card-body">
+                {% if flagged_posts %}
+                    {% for post in flagged_posts %}
+                        <div class="border p-3 mb-3 rounded">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h6><i class="fas fa-user"></i> {{ post.author.username }}</h6>
+                                <small class="text-muted">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                            </div>
+                            <p><strong>Content:</strong> "{{ post.content }}"</p>
+                            <p><strong>Reason:</strong> {{ post.flagged_reason }}</p>
+                            <p><strong>Sentiment:</strong> 
+                                <span class="badge bg-{{ 'danger' if post.sentiment_label == 'negative' else 'secondary' }}">
+                                    {{ post.sentiment_label }} ({{ "%.2f"|format(post.sentiment_score) }})
+                                </span>
+                            </p>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                        <h5>No Flagged Posts</h5>
+                        <p class="text-muted">All content is positive!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5><i class="fas fa-chart-bar"></i> Platform Statistics</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-4">
+                        <h4 class="text-primary">{{ flagged_accounts|length }}</h4>
+                        <small>Flagged Accounts</small>
+                    </div>
+                    <div class="col-4">
+                        <h4 class="text-warning">{{ flagged_posts|length }}</h4>
+                        <small>Flagged Posts</small>
+                    </div>
+                    <div class="col-4">
+                        <h4 class="text-success">Active</h4>
+                        <small>AI Monitoring</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
